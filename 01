@@ -14,7 +14,7 @@ if not displayName or displayName == "" then
 end
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
-local title = ("Draco hub V2 | Hello %s"):format(displayName)
+local title = ("Draco hub V2 🐲 | Hello %s"):format(displayName)
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/user-Nombre123J/User-404/refs/heads/main/Library%20dragon"))()
 
@@ -2773,11 +2773,12 @@ Gift:AddSwitch(" Auto Eat Everything", function(state)
 end)
 local Credits = window:AddTab("Credits")
 
-Credits:AddLabel("paid version V2")
+Credits:AddLabel("paid version V2🐉")
 Credits:AddLabel("Script Made by username:JohanX7_12")
 Credits:AddLabel("Rework by Johan")
 Credits:AddLabel("I hope you like the script, for bugs or suggestions on my Tiktok")
 Credits:AddLabel("Tiktok User:Johan13098")
-Credits:AddButton("Copy Link", function()")
+Credits:AddButton("Copy Link", function()
+setclipboard("tiktok.com/@johan13098")
         end)
 
