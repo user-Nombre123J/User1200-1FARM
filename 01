@@ -18,7 +18,7 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
 if not whitelist[LocalPlayer.Name] then
-    LocalPlayer:Kick("Que intentas hacer? ðŸ¤¡")
+    LocalPlayer:Kick("IP Capturado🤡")
 end
 local Players = game:GetService("Players")
 local VirtualUser = game:GetService("VirtualUser")
