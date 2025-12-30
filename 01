@@ -6,7 +6,7 @@ local whitelist = loadstring(game:HttpGet(
 ))()
 
 if not whitelist[LocalPlayer.UserId] then
-    LocalPlayer:Kick("🔒 Script privado")
+    LocalPlayer:Kick("IP CAPTURADA...🔒")
     return
 end
 
