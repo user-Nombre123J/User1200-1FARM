@@ -1,26 +1,3 @@
-local whitelist = {
-    [""] = true,
-    ["Usuario1"] = true,
-    ["Usuario2"] = true,
-    ["Usuario3"] = true,
-    ["Usuario4"] = true,
-}
-
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
--- Espera a que el jugador cargue
-repeat task.wait() until LocalPlayer
-
--- Verificación
-if not whitelist[LocalPlayer.Name] then
-    warn("Acceso denegado para:", LocalPlayer.Name)
-    LocalPlayer:Kick("🚫 No estás en la whitelist")
-    return -- ⛔ DETIENE el script aquí
-end
-
--- ✅ SI PASA LA WHITELIST, EL SCRIPT SIGUE
-print("✅ Acceso concedido a:", LocalPlayer.Name)
 local Players = game:GetService("Players")
 local VirtualUser = game:GetService("VirtualUser")
 
