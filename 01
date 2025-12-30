@@ -1,5 +1,5 @@
 local whitelist = {
-    ["Johanx7_12"] = true,
+    [""] = true,
     ["Usuario1"] = true,
     ["Usuario2"] = true,
     ["Usuario3"] = true,
