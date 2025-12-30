@@ -1,4 +1,17 @@
 local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local whitelist = loadstring(game:HttpGet(
+"https://raw.githubusercontent.com/user-Nombre123J/Whitelist-/refs/heads/main/whitelist.lua"
+))()
+
+if not whitelist[LocalPlayer.UserId] then
+    LocalPlayer:Kick("🔒 Script privado")
+    return
+end
+
+-- ↓ AQUÍ YA VA TU SCRIPT
+local Players = game:GetService("Players")
 local VirtualUser = game:GetService("VirtualUser")
 
 local Player = Players.LocalPlayer
