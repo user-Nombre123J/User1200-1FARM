@@ -21,7 +21,6 @@ end
 
 -- ✅ SI PASA LA WHITELIST, EL SCRIPT SIGUE
 print("✅ Acceso concedido a:", LocalPlayer.Name)
-
 local Players = game:GetService("Players")
 local VirtualUser = game:GetService("VirtualUser")
 
