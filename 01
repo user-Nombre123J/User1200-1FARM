@@ -14,7 +14,7 @@ if not displayName or displayName == "" then
 end
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
-local title = (" DRACO HUB REWORK V2| WELCOME - %s"):format(displayName)
+local title = (" DRACO HUB REWORK V2 | WELCOME - %s"):format(displayName)
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/user-Nombre123J/User-404/refs/heads/main/Library%20dragon"))()
 
