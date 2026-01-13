@@ -26,7 +26,7 @@ if not displayName or displayName == "" then
 end
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
-local title = ("FASH FARMING VIP | WELCOME - 👑%s"):format(displayName)
+local title = ("FASH FARMING DRACO PRIVATE | WELCOME 👑- %s"):format(displayName)
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/user-Nombre123J/User-404/refs/heads/main/Library%20dragon"))()
 
@@ -349,8 +349,7 @@ AutoFarm:AddButton("Jungle lift", function()
     task.wait(0.05)
     VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
 end)
-
-AutoFarm:AddLabel("Rebiths Ganados").TextSize = 23
+AutoFarm:AddLabel("Rebiths Gained").TextSize = 23
 
 
 local fastStrengthFolder = AutoFarm:AddFolder("Fast Rebirths Functions")
@@ -362,8 +361,7 @@ local footerTimeLabel = fastStrengthFolder:AddLabel("0d 0h 0m 0s")
 footerTimeLabel.TextSize = 18
 local footerRebirthsLabel = fastStrengthFolder:AddLabel("Rebirths: 0")
 footerRebirthsLabel.TextSize = 18
-local footerRebirthsGainedLabel = fastStrengthFolder:AddLabel("Rebirths ganados
-: 0")
+local footerRebirthsGainedLabel = fastStrengthFolder:AddLabel("Rebirths Gained: 0")
 footerRebirthsGainedLabel.TextSize = 18
 
 local startTime = tick()
@@ -449,7 +447,7 @@ fastStrengthFolder:AddSwitch("Fast Rebirth", function(state)
     getgenv().AutoFarming = state
 
     if state then
-        warn("âš¡ AutoFarming ACTIVADO")
+        warn("⚡ AutoFarming ACTIVADO")
 
         task.spawn(function()
             while getgenv().AutoFarming do
@@ -480,11 +478,11 @@ fastStrengthFolder:AddSwitch("Fast Rebirth", function(state)
                 print("Renacimiento hecho. Reiniciando ciclo.")
             end
 
-            print("ðŸ›‘ AutoFarming DETENIDO")
+            print("🛑 AutoFarming DETENIDO")
         end)
 
     else
-        warn("ðŸ›‘ AutoFarming DESACTIVADO")
+        warn("🛑 AutoFarming DESACTIVADO")
     end
 end)
 
@@ -1739,4 +1737,5 @@ Players.PlayerAdded:Connect(function(plr)
 		end
 	end)
 end)
+
 
