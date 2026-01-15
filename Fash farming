@@ -40,20 +40,19 @@ local AutoFarm = window:AddTab("Farm Op")
 
 getgenv()._AutoRepFarmEnabled = false  
 
-AutoFarm:AddSwitch("Strength OP+", function(state)
-    getgenv().AutoStrength = state
-    warn("[Strength OP+] Estado:", state and "ON" or "OFF")
+AutoFarm:AddSwitch("Strength Op", function(state)
+    getgenv()._AutoRepFarmEnabled = state
+    warn("[Auto Rep Farm] Estado cambiado a:", state and "ON" or "OFF")
 end)
 
 local Players = game:GetService("Players")
 local Stats = game:GetService("Stats")
 local LocalPlayer = Players.LocalPlayer
-local MuscleEvent = nil
 
-local REPS_PER_CYCLE = 120      -- MÁS reps por ciclo
-local REP_DELAY = 0.05         -- Más rápido pero estable
-local MAX_PING = 6000
-local SAFE_PING = 350
+local REPS_PER_CYCLE = 40
+local REP_DELAY = 0.01
+local MAX_PING = 5000  
+local MIN_PING = 300
 
 local function getPing()
     local success, ping = pcall(function()
@@ -63,28 +62,29 @@ local function getPing()
 end
 
 task.spawn(function()
-    while not LocalPlayer:FindFirstChild("muscleEvent") do
-        task.wait(1)
-    end
-    MuscleEvent = LocalPlayer.muscleEvent
-end)
-
-task.spawn(function()
-    local paused = false
+    local farmingPaused = false
 
     while true do
-        if getgenv().AutoStrength and MuscleEvent then
+        if getgenv()._AutoRepFarmEnabled then
             local ping = getPing()
 
             if ping > MAX_PING then
-                paused = true
-            elseif ping <= SAFE_PING then
-                paused = false
+                if not farmingPaused then
+                    warn("[Auto Rep Farm] Ping alto ("..math.floor(ping).."ms), pausando farmeo...")
+                    farmingPaused = true
+                end
             end
 
-            if not paused then
+            if ping <= MIN_PING then
+                if farmingPaused then
+                    warn("[Auto Rep Farm] Ping bajo ("..math.floor(ping).."ms), reanudando farmeo...")
+                    farmingPaused = false
+                end
+            end
+
+            if not farmingPaused and LocalPlayer:FindFirstChild("muscleEvent") then
                 for i = 1, REPS_PER_CYCLE do
-                    MuscleEvent:FireServer("rep")
+                    LocalPlayer.muscleEvent:FireServer("rep")
                 end
             end
         end
@@ -92,7 +92,32 @@ task.spawn(function()
         task.wait(REP_DELAY)
     end
 end)
+local autoEatEnabled = false
 
+local function eatProteinEgg()
+    local player = game.Players.LocalPlayer
+    local backpack = player:WaitForChild("Backpack")
+    local character = player.Character or player.CharacterAdded:Wait()
+
+    local egg = backpack:FindFirstChild("Protein Egg")
+    if egg then
+        egg.Parent = character
+        pcall(function()
+            egg:Activate()
+        end)
+    end
+end
+
+task.spawn(function()
+    while true do
+        if autoEatEnabled then
+            eatProteinEgg()
+            task.wait(1800)
+        else
+            task.wait(1)
+        end
+    end
+end)
 
 AutoFarm:AddSwitch("Auto Eat Egg 30 Minuts", function(state)
     autoEatEnabled = state
