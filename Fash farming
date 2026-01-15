@@ -171,127 +171,47 @@ end)
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local Stats = game:GetService("Stats")
-local UserInputService = game:GetService("UserInputService")
-
 local player = Players.LocalPlayer
-local startTime = tick()
+local camera = workspace.CurrentCamera
 
--- GUI
-local gui = Instance.new("ScreenGui")
-gui.Name = "AntiAFK_Johanx7_12"
-gui.ResetOnSpawn = false
-gui.Parent = player:WaitForChild("PlayerGui")
+-- EFECTO VISUAL ROJO
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "RedGlitchAFK"
 
 local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.new(0, 280, 0, 160)
-frame.Position = UDim2.new(0, 20, 0, 20)
-frame.BackgroundColor3 = Color3.fromRGB(120, 0, 0)
-frame.BackgroundTransparency = 0.1
-frame.BorderSizePixel = 0
-frame.Active = true
-
-local corner = Instance.new("UICorner", frame)
-corner.CornerRadius = UDim.new(0, 14)
-
--- TITULO
-local title = Instance.new("TextLabel", frame)
-title.Size = UDim2.new(1, 0, 0, 30)
-title.BackgroundTransparency = 1
-title.Text = "Anti AFK by Johanx7_12"
-title.TextColor3 = Color3.fromRGB(255, 80, 80)
-title.Font = Enum.Font.GothamBold
-title.TextSize = 16
+frame.Size = UDim2.new(1,0,1,0)
+frame.BackgroundColor3 = Color3.fromRGB(120,0,0)
+frame.BackgroundTransparency = 0.85
+frame.ZIndex = 5
 
 -- TEXTO
-local text = Instance.new("TextLabel", frame)
-text.Size = UDim2.new(1, -20, 1, -50)
-text.Position = UDim2.new(0, 10, 0, 40)
-text.BackgroundTransparency = 1
-text.TextColor3 = Color3.fromRGB(255, 200, 200)
-text.Font = Enum.Font.Code
-text.TextSize = 15
-text.TextXAlignment = Enum.TextXAlignment.Left
-text.TextYAlignment = Enum.TextYAlignment.Top
+local txt = Instance.new("TextLabel", frame)
+txt.Size = UDim2.new(1,0,1,0)
+txt.Text = "ANTI AFK MODE: RED GLITCH"
+txt.TextColor3 = Color3.fromRGB(255,80,80)
+txt.BackgroundTransparency = 1
+txt.Font = Enum.Font.Arcade
+txt.TextSize = 40
 
--- FPS
-local fps = 0
-local last = tick()
-
-RunService.RenderStepped:Connect(function()
-    fps += 1
-    if tick() - last >= 1 then
-        last = tick()
-        fps = 0
-    end
-end)
-
--- HUD UPDATE
-task.spawn(function()
-    while true do
-        local ping = Stats.Network.ServerStatsItem["Data Ping"]:GetValueString()
-        local playerCount = #Players:GetPlayers()
-        local elapsed = math.floor(tick() - startTime)
-
-        local minutes = math.floor(elapsed / 60)
-        local seconds = elapsed % 60
-
-        text.Text =
-            "FPS: "..fps..
-            "\nPing: "..ping..
-            "\nPlayers: "..playerCount..
-            "\nTime: "..string.format("%02d:%02d", minutes, seconds)
-
-        task.wait(1)
-    end
-end)
-
--- 🔴 ANTI AFK POR MOVIMIENTO
+-- ANTI AFK RARO
 task.spawn(function()
     while true do
         local char = player.Character
-        local hum = char and char:FindFirstChildOfClass("Humanoid")
+        local hrp = char and char:FindFirstChild("HumanoidRootPart")
 
-        if hum then
-            hum:Move(Vector3.new(0.3, 0, 0))
+        if hrp then
+            -- Rotación mínima (detectada como actividad)
+            hrp.CFrame = hrp.CFrame * CFrame.Angles(0, math.rad(3), 0)
+
+            -- Movimiento falso de cámara
+            camera.CFrame = camera.CFrame * CFrame.Angles(0, math.rad(1), 0)
         end
 
-        task.wait(5)
-    end
-end)
+        -- Parpadeo visual
+        frame.BackgroundTransparency = math.random(70,90)/100
+        txt.TextTransparency = math.random(0,30)/100
 
--- 🟢 SISTEMA PARA MOVER EL PANEL (DRAG)
-local dragging = false
-local dragStart
-local startPos
-
-frame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 
-    or input.UserInputType == Enum.UserInputType.Touch then
-        dragging = true
-        dragStart = input.Position
-        startPos = frame.Position
-    end
-end)
-
-frame.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 
-    or input.UserInputType == Enum.UserInputType.Touch then
-        dragging = false
-    end
-end)
-
-UserInputService.InputChanged:Connect(function(input)
-    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement 
-    or input.UserInputType == Enum.UserInputType.Touch) then
-
-        local delta = input.Position - dragStart
-        frame.Position = UDim2.new(
-            startPos.X.Scale,
-            startPos.X.Offset + delta.X,
-            startPos.Y.Scale,
-            startPos.Y.Offset + delta.Y
-        )
+        task.wait(4)
     end
 end)
 
