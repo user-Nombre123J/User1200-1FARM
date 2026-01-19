@@ -156,6 +156,113 @@ local showotherpetsswitch =
     end
 )
 showotherpetsswitch:Set(false)
+MainTab:AddSwitch(
+    "Infinite Jump",
+    function(bool)
+        _G.InfiniteJump = bool
+
+        if bool then
+            local InfiniteJumpConnection
+            InfiniteJumpConnection =
+                game:GetService("UserInputService").JumpRequest:Connect(
+                function()
+                    if _G.InfiniteJump then
+                        game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState(
+                            "Jumping"
+                        )
+                    else
+                        InfiniteJumpConnection:Disconnect()
+                    end
+                end
+            )
+        end
+    end
+)
+
+local parts = {}
+local partSize = 2048
+local totalDistance = 50000
+local startPosition = Vector3.new(-2, -9.5, -2)
+
+local function createAllParts()
+    local numberOfParts = math.ceil(totalDistance / partSize)
+
+    for x = 0, numberOfParts - 1 do
+        for z = 0, numberOfParts - 1 do
+            local function createPart(pos, name)
+                local part = Instance.new("Part")
+                part.Size = Vector3.new(partSize, 1, partSize)
+                part.Position = pos
+                part.Anchored = true
+                part.Transparency = 1
+                part.CanCollide = true
+                part.Name = name
+                part.Parent = workspace
+                return part
+            end
+
+            table.insert(
+                parts,
+                createPart(startPosition + Vector3.new(x * partSize, 0, z * partSize), "Part_Side_" .. x .. "_" .. z)
+            )
+            table.insert(
+                parts,
+                createPart(
+                    startPosition + Vector3.new(-x * partSize, 0, z * partSize),
+                    "Part_LeftRight_" .. x .. "_" .. z
+                )
+            )
+            table.insert(
+                parts,
+                createPart(
+                    startPosition + Vector3.new(-x * partSize, 0, -z * partSize),
+                    "Part_UpLeft_" .. x .. "_" .. z
+                )
+            )
+            table.insert(
+                parts,
+                createPart(
+                    startPosition + Vector3.new(x * partSize, 0, -z * partSize),
+                    "Part_UpRight_" .. x .. "_" .. z
+                )
+            )
+        end
+    end
+end
+task.spawn(createAllParts)
+
+local walkonwaterSwicth =
+    MainTab:AddSwitch(
+    "Walk on Water",
+    function(bool)
+        for _, part in ipairs(parts) do
+            if part and part.Parent then
+                part.CanCollide = bool
+            end
+        end
+    end
+)
+walkonwaterSwicth:Set(true)
+
+local timeDropdown =
+    MainTab:AddDropdown(
+    "Change Time",
+    function(selection)
+        local lighting = game:GetService("Lighting")
+
+        if selection == "Night" then
+            lighting.ClockTime = 0
+        elseif selection == "Day" then
+            lighting.ClockTime = 12
+        elseif selection == "Midnight" then
+            lighting.ClockTime = 6
+        end
+    end
+)
+
+timeDropdown:Add("Night")
+timeDropdown:Add("Day")
+timeDropdown:Add("Midnight")
 
 local Killer = window:AddTab("Kill")
 
