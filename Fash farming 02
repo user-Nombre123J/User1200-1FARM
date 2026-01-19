@@ -38,6 +38,38 @@ local window = library:AddWindow(title, {
 local MainTab = window:AddTab("Main")
 MainTab:AddLabel("Important:").TextSize = 22
 
+MainTab:AddSwitch("Ocultar kills", function(state)
+    local rSto = game:GetService("ReplicatedStorage")
+
+    for _, obj in pairs(rSto:GetDescendants()) do
+        if obj:IsA("GuiObject") and obj.Name:match("Frame$") then
+            obj.Visible = not state
+        end
+    end
+
+    if state then
+        if _G.HideFramesConn then
+            _G.HideFramesConn:Disconnect()
+        end
+        _G.HideFramesConn = rSto.DescendantAdded:Connect(function(obj)
+            if obj:IsA("GuiObject") and obj.Name:match("Frame$") then
+                obj.Visible = false
+            end
+        end)
+    else
+        if _G.HideFramesConn then
+            _G.HideFramesConn:Disconnect()
+            _G.HideFramesConn = nil
+        end
+        for _, obj in pairs(rSto:GetDescendants()) do
+            if obj:IsA("GuiObject") and obj.Name:match("Frame$") then
+                obj.Visible = true
+            end
+        end
+    end
+end)
+
+
 local antiKnockbackSwitch =
     MainTab:AddSwitch(
     "Anti Fling",
